@@ -1,0 +1,18 @@
+.container
+    .row 
+        nav(class="nav nav-tabs")
+            li(class="nav-item")
+                if title.match('首页')
+                    a(class="nav-link active" href="/") 首页
+                else 
+                    a(class="nav-link" href="/") 首页
+            li(class="nav-item")
+                if title.match('列表页')
+                    a(class="nav-link active" href="/admin/list") 列表页
+                else 
+                    a(class="nav-link" href="/admin/list") 列表页
+            li(class="nav-item")
+                if title.match('录入页')
+                    a(class="nav-link active" href="/admin/movie") 录入页
+                else 
+                    a(class="nav-link" href="/admin/movie") 录入页

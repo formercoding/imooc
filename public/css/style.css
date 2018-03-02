@@ -1,0 +1,26 @@
+.nav {
+    margin: 50px 0;
+}
+
+
+.thumbnail img {
+    width: 200px;
+    height: 200px;
+    display: inline-block;
+}
+
+.thumbnail h3 {
+    margin-top: 20px;
+}
+
+.thumbnail h3 a {
+    margin: 20px 0;
+}
+
+.thumbnail h3 {
+    font-size: 16px;
+}
+
+.thumbnail h3 a {
+    margin: 20px 0;
+}
