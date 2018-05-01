@@ -1,4 +1,5 @@
 let Movie = require('../models/movie');
+let Comment = require('../models/comment');
 let _ = require('underscore');
 
 exports.update = (req, res) => {
@@ -29,15 +30,21 @@ exports.movie = (req, res) => {
     var id = req.params.id;
 
     Movie.findById(id, function (err, movie) {
-        res.render('detail', {
-            title: 'imooc' + movie.title,
-            movie: movie
-        })
+        Comment
+            .find({movie: id})
+            .populate('from', 'name')
+            .populate('reply.from', 'name')
+            .populate('reply.to', 'name')
+            .exec(function(err, comments) {
+                res.render('detail', {
+                    title: 'imooc' + movie.title,
+                    movie: movie,
+                    comments: comments
+                })
+            })
     });
 }
-exports.signup = (req, res) => {
-    
-}
+
 exports.adminmovie = (req, res) => {
     res.render('admin', {
         title: 'imooc 录入页',

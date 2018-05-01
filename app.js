@@ -1,26 +1,30 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path')
+var cookieParser = require('cookie-parser')
+var session = require('express-session')
+var logger = require('morgan')
 var port = process.env.PORT || 3000;
-var app = express();
 var mongoose = require('mongoose');
-var mongoStore = require('connect-mongo')(express);
+var mongoStore = require('connect-mongo')(session);
 
 var moment = require('moment');
-var dbUrl = 'mongodb://localhost/imooc';
-
-mongoose.connect(dbUrl);
+var app = express();
 
 app.set('views', './app/views/pages');
 app.set('view engine', 'jade');
-app.use(express.cookieParse())
-app.use(express.session({
-    secrect: 'imooc',
+//这里传入了一个密钥加session id
+app.use(cookieParser('User'));
+//使用就靠这个中间件
+app.use(session({ 
+    secret: 'user',
+    resave: false,
+    saveUninitialized: true,
     store: new mongoStore({
-        url: dbUrl,
+        url: 'mongodb://localhost/imooc',
         collection: 'sessions'
-    })
-}))
+    }) 
+}));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use('/', express.static('./node_modules'));
@@ -29,10 +33,17 @@ app.locals.moment = moment;
 
 if('development' === app.get('env')) {
     app.set('showStackError', true);
-    app.user(express.logger(':method :url :status'));
+    app.use(logger(':method :url :status'));
+    app.locals.pretty = true;
     mongoose.set('debug', true);
 }
 
+// app.use(session({
+//     secret: 'user',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: true }
+// }))
 
 require('./config/routes')(app);
 
@@ -43,5 +54,4 @@ console.log('服务启动成功:' + port);
 mongoose.connect('mongodb://localhost/imooc', function () {
     console.log('数据库连接成功');
 });
-
 

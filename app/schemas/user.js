@@ -10,6 +10,10 @@ var UserSchema = new mongoose.Schema({
         type: String
     },
     password: String,
+    role: {
+        type: Number,
+        default: 0
+    },
     meta: {
         createAt: {
             type: Date,
@@ -39,23 +43,23 @@ UserSchema.pre('save', function(next) {
 
         bcrypt.hash(user.password, salt, function(err, hash) {
             if(err) {
+                console.log('has err 2')
                 return next(err);
             }
 
             user.password = hash;
+            next();
         })
     })
-
-    next();
 })
 
 UserSchema.methods = {
-    comparePassword(_password, cb) {
+    comparePassword: function(_password, cb) {
         bcrypt.compare(_password, this.password, (err, isMatch) => {
             if(err) {
                 return cb(err);
             }
-
+            
             cb(null, isMatch);
         })
     }

@@ -4,7 +4,7 @@ block content
     .container
         .row
             .col-md-7
-                video(controls="" autoplay="" name="media" width="100%")
+                video(controls=""  name="media" width="100%")
                     source(src="#{movie.flash}" type="video/mp4")
             .col-md-5
                 dl.dl.horizontal
@@ -20,4 +20,45 @@ block content
                     dd= movie.year
                     dt 简介
                     dd= movie.summary
+            .col-md-12
+                .panel.panel-default
+                    .panel-heading
+                        h3 评论区
+                    .panel-body
+                        ul.media-list
+                            each item in comments
+                                li.media
+                                    .pull-ledt
+                                        a.comment(href="#comments", data-cid="#{item._id}", 
+                                            data-tid="#{item.from._id}")
+                                            img.meida-object(src="", style="width: 64px; height: 64px;")
+                                    .media-body
+                                        h4.media-heading #{item.from.name}
+                                        p #{item.content}
+                                        if item.reply && item.reply.length > 0
+                                            each reply in item.reply
+                                                .media
+                                                    .pull-left
+                                                        a.comment(href="#comments", data-cid="#{item._id}", 
+                                                            data-tid="#{reply.from._id}")
+                                                            img.meida-object(src="", style="width: 64px; height: 64px;")
+                                                            .media-body
+                                                                h4.media-heading 
+                                                                span #{reply.from.name}
+                                                                span.text-info &nbsp;回复:&nbsp;
+                                                                span #{reply.to.name}
+                                                                p  #{reply.content}
+            .col-md-5
+                form#commentForm(method="post" action="/user/comment")
+                    input.cid(type="hidden", name="comment[cid]", value="")
+                    input.tid(type="hidden", name="comment[tid]", value="")
+                    input(type="hidden", name="comment[movie]", value="#{movie._id}")
+                    if user
+                        input(type="hidden", name="comment[from]", row="3", value="#{user._id}")
+                        .form-group
+                            textarea.form-control(name="comment[content]", row="3")
+                            button.btn.btn-promary(type="submit") 提交
+                    else 
+                        span 请登陆后评论
+    script(src="/public/js/detail.js")
 

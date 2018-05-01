@@ -18,31 +18,44 @@
                     a(class="nav-link" href="/admin/movie") 录入页
 .navbar.navbar-default.navbar-fixed-bottom
     .container
-        .navbar-header
-            a.navbar-brand(href="/") 重度科幻迷
         if user 
-         p.navbar-text.navbar-right
-            span 欢迎你，${user.name}
-            span &nbsp; | &nbsp;
-            a.nav-link(href="logout") 登出
+            p.navbar-text.navbar-right
+                span 欢迎你，#{user.name}
+                span &nbsp; | &nbsp;
+                a(href="logout") 登出
         else 
-        p.navbar-text.navbar-right 
-            a.nav-link(href="#", data-toggle="modal", data-target="signupModal") 注册
-            span &nbsp; | &nbsp;
-            a.nav-link(href="#", data-toggle="modal", data-target="signinModal") 登录
+            p.navbar-text.navbar-right 
+                a(href="javascript:void(0)", data-toggle="modal", data-target="#signupModal") 注册
+                span &nbsp; | &nbsp;
+                a(href="javascript:void(0)", data-toggle="modal", data-target="#signinModal") 登录
 #signupModal.modal.fade
-.modal-dialog
-    .modal-content 
-        form(method="POST", action="/user/signup")
-            .modal-header 注册
-            .modal-body
-                .form-group
-                    label(for="signinName") 用户名 
-                    inpu#signinName.form-control(name="user[name]", type="text")
-                .form-group
-                    label(for="signinPassword") 密码 
-                    inpu#signinPassword.form-control(name="user[password]", type="text")
-            .modal-footer
-                button.btn.btn-default(type="button", data-dismiss="modal") 关闭
-                button.btn.btn-success(type="submit") 提交
+    .modal-dialog
+        .modal-content 
+            form(method="POST", action="/user/signup")
+                .modal-header 注册
+                .modal-body
+                    .form-group
+                        label(for="signinName") 用户名 
+                        input#signinName.form-control(style="{height: 30px}" name="user[name]", type="text")
+                    .form-group
+                        label(for="signinPassword") 密码 
+                        input#signinPassword.form-control(style="{height: 30px}" name="user[password]", type="text")
+                .modal-footer
+                    button.btn.btn-default(type="button", data-dismiss="modal") 关闭
+                    button.btn.btn-success(type="submit") 提交
+#signinModal.modal.fade
+    .modal-dialog
+        .modal-content 
+            form(method="POST", action="/user/signin")
+                .modal-header 登录
+                .modal-body
+                    .form-group
+                        label(for="signinName") 用户名 
+                        input#signinName.form-control(style="{height: 30px}" name="user[name]", type="text")
+                    .form-group
+                        label(for="signinPassword") 密码 
+                        input#signinPassword.form-control(style="{height: 30px}" name="user[password]", type="text")
+                .modal-footer
+                    button.btn.btn-default(type="button", data-dismiss="modal") 关闭
+                    button.btn.btn-success(type="submit") 提交
 

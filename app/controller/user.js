@@ -9,8 +9,8 @@ exports.signup = (req, res) => {
             console.log(err)
         }
 
-        if (user) {
-            return res.redirect('/');
+        if (user.length) {
+            return res.redirect('/signup');
         } else {
             var user = new User(_user);
 
@@ -19,7 +19,7 @@ exports.signup = (req, res) => {
                     console.loga(err);
                 }
 
-                res.redirect('/admin/userlist')
+                res.redirect('/')
             })
         }
     })
@@ -27,28 +27,45 @@ exports.signup = (req, res) => {
 
 // userlist page
 exports.userlist = (req, res) => {
-    User.fetch(function (err, users) {
-        if (err) {
-            console.log(err)
+    User.fetch((err, users) => {
+        if(err) {
+            console.log(err);
         }
 
         res.render('userlist', {
             title: 'imooc 用户列表页',
-            users,
+            users
         })
     })
 }
 
 // signin
 exports.signin = (req, res) => {
-    Movie.fetch(function (err, movies) {
+    var _user = req.body.user
+    name = _user.name,
+    password = _user.password;
+
+    User.findOne({ name: name }, (err, user) => {
         if (err) {
-            console.log(err);
+            console.log(err)
         }
 
-        res.render('index', {
-            title: 'imooc 首页',
-            movies: movies
+        if (!user) {
+            return res.redirect('/signup');
+        }
+
+        user.comparePassword(password, (err, isMatch) => {
+            if(err) {
+                console.log(err)
+            }
+
+            if(isMatch) {
+                req.session.user = user;
+
+                return res.redirect('/');
+            } else {
+                return res.redirect('/signin')
+            }
         })
     })
 }
@@ -57,4 +74,42 @@ exports.signin = (req, res) => {
 exports.logout = (req, res) => {
     delete req.session.user;
     // delete app.locals.user;
+
+    res.redirect('/')
 }
+
+// signin
+exports.showSignin = (req, res) => {
+    res.render('signin', {
+        title: '登录页面',
+    })
+}
+
+// signup
+exports.showSignup = (req, res) => {
+    res.render('signup', {
+        title: '注册页面',
+    })
+}
+
+// midware for user
+exports.signinRequired = (req, res, next) => {
+    var user = req.session.user;
+
+    if(!user) {
+        return res.redirect('/signin')
+    } 
+
+    next();
+
+}
+
+exports.adminRequired = (req, res, next) => {
+    var user = req.session.user;
+
+    if(user.role < 10) {
+        return res.redirect('/signin')
+    }
+
+    next();
+};

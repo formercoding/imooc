@@ -1,3 +1,5 @@
+let Movie = require('../models/movie');
+
 exports.index = (req, res) => {
     Movie.fetch(function (err, movies) {
         if (err) {
