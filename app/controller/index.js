@@ -1,14 +1,17 @@
 let Movie = require('../models/movie');
+var Category = require('../models/category')
 
 exports.index = (req, res) => {
-    Movie.fetch(function (err, movies) {
-        if (err) {
-            console.log(err);
-        }
+    Category.find({})
+        .populate({path: 'movies', options: {limit: 5}})
+        .exec((err, categories) => {
+            if(err) {
+                console.log(err);
+            }
 
-        res.render('index', {
-            title: 'imooc 首页',
-            movies: movies
+            res.render('index', {
+                title: 'imooc 首页',
+                categories
+            })
         })
-    })
 }

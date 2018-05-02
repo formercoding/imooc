@@ -1,6 +1,8 @@
 // 模式 对数据字段进行定义
 
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var ObjectId = Schema.Types.ObjectId;
 
 var MovieSchema = new mongoose.Schema({
     doctor: String,
@@ -11,6 +13,10 @@ var MovieSchema = new mongoose.Schema({
     poster: String,
     year: Number,
     summary: String,
+    category: {
+        type: ObjectId,
+        ref: 'Category'
+    },
     meta: {
         createAt: {
             type: Date,

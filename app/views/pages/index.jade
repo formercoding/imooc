@@ -2,12 +2,20 @@ extends ../layout
 
 block content
     .container
-        .row 
-            each item in movies
-                .col-md-3
-                    .thumbnail.text-center
-                        a(href="/movie/#{item._id}")
-                            img(src="#{item.poster}", alt="#{item.title}")
-                        .caption
-                            h3 #{item.title}
-                                p: a.btn.btn-primary(href="/movie/#{item._id}", role="button") 观看预告片
+        .row
+            each cat in categories
+                .panel.panel-primary
+                    .panel-heading
+                        h3 #{cat.name}
+                    .panel-body
+                        if cat.movies && cat.movies.length
+                            each item in cat.movies
+                                .col-md-2
+                                    .thumbnail
+                                        a(href="/movie/#{item._id}")
+                                            img(src="#{item.poster}", alt="#{item.title}")
+                                        .caption
+                                            h3 #{item.title}
+                                                p: a.btn.btn-primary(href="/movie/#{item._id}", role="button") 观看预告片
+
+                    
