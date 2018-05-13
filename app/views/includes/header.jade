@@ -16,6 +16,18 @@
                     a(class="nav-link active" href="/admin/movie") 录入页
                 else 
                     a(class="nav-link" href="/admin/movie") 录入页
+            li(class="nav-item")
+                a(class="nav-link" href="/admin/userlist") 用户列表页
+            li(class="nav-item")
+                a(class="nav-link" href="/admin/category/list") 电影分类页
+            li(class="nav-item")
+                a(class="nav-link" href="/admin/category/new") 添加分类
+    .row
+        form(method="get", action="/result")
+            .input-group.pull-left
+                input.form-control(type="text", name="q")
+                span.input-group-btn
+                    button.btn.btn-default(type="submit") 搜索
 .navbar.navbar-default.navbar-fixed-bottom
     .container
         if user 

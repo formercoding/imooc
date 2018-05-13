@@ -19,15 +19,13 @@ module.exports = (app) => {
     // movie
     app.get('/admin/update/:id', User.signinRequired, User.adminRequired, Movie.update);
 
-    app.get('/admin/list', Movie.adminlist)
+    app.get('/admin/list', Movie.list)
 
     app.get('/movie/:id', Movie.movie);
 
     app.get('/admin/movie', Movie.adminmovie);
 
-    app.post('/admin/movie/new', User.signinRequired, User.adminRequired, Movie.new);
-
-
+    app.post('/admin/movie/new', User.signinRequired, User.adminRequired, Movie.savePoster, Movie.new);
 
     app.delete('/admin/list', User.signinRequired, User.adminRequired, Movie.adminlist);
 
@@ -54,5 +52,8 @@ module.exports = (app) => {
     app.get('/admin/category/new', User.signinRequired, User.adminRequired, Category.new);
     app.post('/admin/category', User.signinRequired, User.adminRequired, Category.save);
     app.get('/admin/category/list', User.signinRequired, User.adminRequired, Category.list);
+
+    // reslut
+    app.get('/result', Index.search);
 }
 

@@ -7,6 +7,7 @@ var logger = require('morgan')
 var port = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 var mongoStore = require('connect-mongo')(session);
+var multer = require('multer');
 
 var moment = require('moment');
 var app = express();
@@ -29,6 +30,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use('/', express.static('./node_modules'));
 app.use('/public', express.static('./public'));
+app.use(multer());
 app.locals.moment = moment;
 
 if('development' === app.get('env')) {

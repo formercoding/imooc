@@ -3,19 +3,24 @@ extends ../layout
 block content
     .container
         .row
-            each cat in categories
-                .panel.panel-primary
-                    .panel-heading
-                        h3 #{cat.name}
-                    .panel-body
-                        if cat.movies && cat.movies.length
-                            each item in cat.movies
-                                .col-md-2
-                                    .thumbnail
-                                        a(href="/movie/#{item._id}")
-                                            img(src="#{item.poster}", alt="#{item.title}")
-                                        .caption
-                                            h3 #{item.title}
-                                                p: a.btn.btn-primary(href="/movie/#{item._id}", role="button") 观看预告片
+            if categories && categories.length
+                each cat in categories
+                    .panel.panel-primary
+                        .panel-heading
+                            h3 
+                                a(href="result?cat=#{cat._id}&p=0") #{cat.name}
+                        .panel-body
+                            if cat.movies
+                                each item in cat.movies
+                                    .col-md-12
+                                        .thumbnail
+                                            a(href="/movie/#{item._id}")
+                                                if item.poster.indexOf('http') != -1
+                                                    img(src="#{item.poster}", alt="#{item.title}")
+                                                else
+                                                    img(src="/public/upload/#{item.poster}", alt="#{item.title}")
+                                            .caption
+                                                h3 #{item.title}
+                                                    p: a.btn.btn-primary(href="/movie/#{item._id}", role="button") 观看预告片
 
                     

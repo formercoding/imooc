@@ -3,16 +3,33 @@ extends ../layout
 block content
     .container
         .row
-            form(method="post", action="/admin/movie/new" style="width:100%")
-                input(type="hidden", name="movie[_id]", value="#{movie._id}")
+            form(method="post", action="/admin/movie/new", enctype="multipart/form-data", style="width:100%")
+                if movie._id
+                    input(type="hidden", name="movie[_id]", value="#{movie._id}")
+                .form-group
+                    label.col-sm-2.control-label(for="inputTitle") 电影ID
+                    .col-sm-10
+                        input.douban.form-control(type="text")
                 .form-group
                     label.col-sm-2.control-label(for="inputTitle") 电影名字
                     .col-sm-10
                         input#inputTitle.form-control(type="text", name="movie[title]", value="#{movie.title}")
                 .form-group
-                    label.col-sm-2.control-label(for="inputCategory") 电影分类
+                    label.col-sm-2.control-label(for="inputCategoryName") 自定义分类
                     .col-sm-10
-                        input#inputCategory.form-control(type="text", name="movie[category]", value="#{movie.category}")
+                        input#inputTitle.form-control(type="text", name="movie[categoryName]", value="#{movie.categoryName || ''}")
+                .form-group
+                    label.col-sm-2.control-label(for="inputCategory") 电影分类
+                    if categories.length
+                        each cat in categories
+                            if movie._id
+                                label.radio-inline
+                                    input(type="radio", name="movie[category]", value="#{cat._id}", checked="#{cat._id == movie.category}")
+                                span #{cat.name}
+                            else 
+                                label.radio-inline
+                                    input(type="radio", name="movie[category]", value="#{cat._id}")
+                                span #{cat.name}
                 .form-group
                     label.col-sm-2.control-label(for="inputDoctor") 电影导演
                     .col-sm-10
@@ -30,6 +47,10 @@ block content
                     .col-sm-10
                         input#inputPoster.form-control(type="text", name="movie[poster]", value="#{movie.poster}")
                 .form-group
+                    label.col-sm-2.control-label(for="inputPoster") 海报上传
+                    .col-sm-10
+                        input#uploadPoster.form-control(type="file", name="uploadPoster")
+                .form-group
                     label.col-sm-2.control-label(for="inputFlash") 片源地址
                     .col-sm-10
                         input#inputFlash.form-control(type="text", name="movie[flash]", value="#{movie.flash}")
@@ -44,5 +65,7 @@ block content
                 .form-group
                     .col-sm-offset-2.col-sm-10
                     button.btn.btn-default(type="submit") 录入
+    script(src="/public/js/admin.js")
+            
 
             
